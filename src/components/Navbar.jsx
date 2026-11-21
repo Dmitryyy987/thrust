@@ -24,9 +24,6 @@ export default function Navbar() {
 
   const location = useLocation();
 
-  // Close mobile menu on route change
-  useEffect(() => { setMenuOpen(false); }, [location]);
-
   // Scroll listener
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);

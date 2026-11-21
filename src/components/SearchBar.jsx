@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
 
 // Search index across all pages
 const SEARCH_INDEX = [
@@ -32,25 +31,18 @@ const SEARCH_INDEX = [
 export default function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   // Search functionality
-  useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-
+  const results = useMemo(() => {
+    if (!query.trim()) return [];
     const lowerQuery = query.toLowerCase();
-    const filtered = SEARCH_INDEX.filter((item) =>
+    return SEARCH_INDEX.filter((item) =>
       item.keywords.some((kw) => kw.includes(lowerQuery)) ||
       item.title.toLowerCase().includes(lowerQuery)
     );
-
-    setResults(filtered);
   }, [query]);
 
   // Close on outside click

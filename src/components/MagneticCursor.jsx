@@ -12,7 +12,6 @@ export default function MagneticCursor() {
     let mouseY = window.innerHeight / 2;
     let ringX = mouseX;
     let ringY = mouseY;
-    let isHovering = false;
     let rafId = null;
 
     const LERP = 0.12;
@@ -28,7 +27,6 @@ export default function MagneticCursor() {
     const onMouseOver = (e) => {
       const target = e.target.closest('a, button');
       if (target) {
-        isHovering = true;
         ring.style.width = '100px';
         ring.style.height = '100px';
         ring.style.borderColor = 'var(--accent)';
@@ -39,7 +37,6 @@ export default function MagneticCursor() {
     const onMouseOut = (e) => {
       const target = e.target.closest('a, button');
       if (target) {
-        isHovering = false;
         ring.style.width = '40px';
         ring.style.height = '40px';
         ring.style.borderColor = 'rgba(240, 237, 230, 0.5)';

@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './HeroSection.css';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const PILL_TEXT = 'SINCE 2019 ✦ SINCE 2019 ✦ SINCE 2019 ✦ SINCE 2019 ✦ ';
 
 // ── Manual character splitter ─────────────────────────────────────────────
 // Wraps each glyph in .char-wrap > .char-inner so GSAP can animate them
@@ -19,21 +20,6 @@ function SplitChars({ text }) {
         </span>
       ))}
     </>
-  );
-}
-
-// ── Inline rotating pill ──────────────────────────────────────────────────
-const PILL_TEXT = 'SINCE 2019 ✦ SINCE 2019 ✦ SINCE 2019 ✦ SINCE 2019 ✦ ';
-
-function RotatingPill() {
-  return (
-    <span className="hero-pill" aria-label="Since 2019">
-      <span className="pill-track">
-        {/* Doubled so the seamless loop works */}
-        <span className="pill-text">{PILL_TEXT}</span>
-        <span className="pill-text">{PILL_TEXT}</span>
-      </span>
-    </span>
   );
 }
 
@@ -134,7 +120,7 @@ export default function HeroSection() {
         if (p && p.catch) p.catch(() => {
           // ignore play errors (autoplay policies), will retry on interaction
         });
-      } catch (e) {
+      } catch {
         // swallow
       }
     };
@@ -149,20 +135,13 @@ export default function HeroSection() {
     const onLoaded = () => {
       if (bgRef.current) bgRef.current.classList.add('has-video');
     };
-    const onError = (ev) => {
+    const onError = () => {
       if (bgRef.current) bgRef.current.classList.remove('has-video');
-      // Log for debugging in the browser console
-      // eslint-disable-next-line no-console
-      console.error('Hero background video failed to load', ev);
     };
     if (vid) {
       vid.addEventListener('loadeddata', onLoaded);
       vid.addEventListener('error', onError);
     }
-
-    // Debug info (visible in browser console)
-    // eslint-disable-next-line no-console
-    console.info('Hero video element', vid, 'src=', vid?.currentSrc || vid?.src);
 
     return () => ctx.revert();
   }, []);
